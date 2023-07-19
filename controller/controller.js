@@ -43,4 +43,24 @@ const AddProduct = async(req,res)=>
     }
 }
 
-module.exports={getAllProducts,AddProduct};
+const GetProduct= async(req,res)=>
+{
+   try{
+        let product_id=req.params.id;
+        let res_back=await schema.find({_id:product_id});
+        res.json({
+            status:'success',
+            res_back
+        })
+
+   }
+   catch(err)
+   {
+    res.status(400).json({
+        status:'failed',
+        msg:err.message
+    })
+   }
+}
+
+module.exports={getAllProducts,AddProduct,GetProduct};
