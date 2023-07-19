@@ -25,7 +25,7 @@ const AddProduct = async(req,res)=>
 {
     try{
           let data=req.body;
-          let res_back= new schema(data);
+          let res_back= await new schema(data).save(data);
           res.json({
             status:'success',
             msg:'Product added Succesfully',

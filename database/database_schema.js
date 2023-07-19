@@ -17,9 +17,18 @@ const Product_Schema= mongoose.Schema({
         requred:false,
         type:Array,
     },
+    colors:{
+        required:true,
+        type:Array
+    },
+    sizes:{
+       required:true,
+       type:Array
+    },
     Review:{
         required:false,
-        type:Number
+        type:Number,
+        default:0
     },
     InStock:{
         required:true,
