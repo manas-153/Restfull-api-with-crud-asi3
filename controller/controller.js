@@ -21,4 +21,26 @@ const getAllProducts = async(req,res)=>
    }
 }
 
-module.exports={getAllProducts};
+const AddProduct = async(req,res)=>
+{
+    try{
+          let data=req.body;
+          let res_back= new schema(data);
+          res.json({
+            status:'success',
+            msg:'Product added Succesfully',
+            res_back
+          })
+ 
+    }
+    catch(err)
+    {
+        res.status(400).json({
+            status:'failed',
+            msg:err.message
+        })
+
+    }
+}
+
+module.exports={getAllProducts,AddProduct};
