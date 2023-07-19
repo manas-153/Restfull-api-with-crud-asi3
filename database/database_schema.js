@@ -1,6 +1,4 @@
-// const { default: mongoose } = require('mongoose');
 const mongoose = require('mongoose');
-const { boolean } = require('webidl-conversions');
 
 const Product_Schema= mongoose.Schema({
     Product_Name:{
@@ -25,7 +23,7 @@ const Product_Schema= mongoose.Schema({
     },
     InStock:{
         required:true,
-        type:boolean,
+         type:Boolean,
         default:true
     }
     
