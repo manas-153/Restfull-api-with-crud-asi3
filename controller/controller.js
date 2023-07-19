@@ -63,4 +63,25 @@ const GetProduct= async(req,res)=>
    }
 }
 
-module.exports={getAllProducts,AddProduct,GetProduct};
+const AddMultipleProducts= async(req,res)=>
+{
+  try
+  {
+      let products=req.body;
+      let res_back=await schema.insertMany(products);
+      res.json({
+        status:'success',
+        res_back
+      })
+     
+  }
+  catch(err)
+  {
+    res.status(400).json({
+        status:'failed',
+        msg:err.message
+    })
+  }
+}
+
+module.exports={getAllProducts,AddProduct,GetProduct,AddMultipleProducts};
