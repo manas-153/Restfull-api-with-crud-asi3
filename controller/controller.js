@@ -4,10 +4,21 @@ const getAllProducts = async(req,res)=>
 {
    try{
         const res_back=await schema.find();
-        res.json({
-            status:'success',
-            res_back
-        })
+        if(res_back.length)
+        {
+            res.json({
+                status:'success',
+                res_back
+            })
+        }
+        else
+        {
+            res.status(400).json({
+                status:'Empty Database',
+                msg:"Looks like database is Empty, Please add some products"
+            })
+        }
+        
        
    }
    catch(err)

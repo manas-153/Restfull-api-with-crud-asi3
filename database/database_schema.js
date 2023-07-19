@@ -9,6 +9,11 @@ const Product_Schema= mongoose.Schema({
         required:true,
         type:String
     },
+    Offer:{
+         required:false,
+         type:String,
+         default:0
+    },
     Price:{
         required:true,
         type:String
