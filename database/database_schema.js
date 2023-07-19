@@ -17,6 +17,10 @@ const Product_Schema= mongoose.Schema({
         requred:false,
         type:Array,
     },
+    category:{
+        required:true,
+        type:String
+    },
     colors:{
         required:true,
         type:Array

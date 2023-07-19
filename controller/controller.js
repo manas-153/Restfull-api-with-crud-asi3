@@ -84,4 +84,74 @@ const AddMultipleProducts= async(req,res)=>
   }
 }
 
-module.exports={getAllProducts,AddProduct,GetProduct,AddMultipleProducts};
+const UpdateProduct=async(req,res)=>
+{
+    try
+    {
+        let id=req.params.id;
+        let data=req.body;
+        let res_back=await schema.findByIdAndUpdate(id,data);
+        res.json({
+            status:'success',
+            msg:"Product Updated successfully",
+            res_back
+        })
+    }
+    catch(err)
+    {
+          res.json({
+            status:'failed',
+            msg:err.message
+          })
+    }
+}
+
+const UpdateMultipleProducts = async(req,res)=>
+{
+    try
+    {
+             
+    }
+    catch(err)
+    {
+
+    }
+}
+
+const DeleteProduct = async(req,res)=>
+{
+    try
+    {
+        let id=req.params.id;
+        let res_back=await schema.findByIdAndRemove(id);
+        if(res_back)
+        {
+            res.json({
+                status:'success',
+                msg:"Product deleted successfully",
+                res_back
+            })
+
+        }
+        else
+        {
+            res.status(400).json({
+                status:"failed",
+                msg:"Product not Found, Looks like product had already deleted from the database"
+            })
+        }
+       
+
+    }
+  
+    catch(err)
+    {
+        res.status(400).json({
+            status:"failed",
+            msg:err.message,
+        })
+
+    }
+}
+
+module.exports={getAllProducts,AddProduct,GetProduct,AddMultipleProducts,UpdateProduct,DeleteProduct};
