@@ -43,3 +43,5 @@ Important Prerequisites:
 (https://nodejs.org/en/download).
 
 2. MongoDb must be installed in system and hosted in your system, if not you can dowanload the Mongodb from the link (https://www.mongodb.com/try/download/community).
+
+3. To test the api You can download either "Postman (https://www.postman.com/downloads/)" or just install the Visual studio code Extention "Thunderclient".
