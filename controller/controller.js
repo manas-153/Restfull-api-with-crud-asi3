@@ -32,7 +32,7 @@ const getAllProducts = async(req,res)=>
    }
 }
 
-const AddProduct = async(req,res)=>
+const addProduct = async(req,res)=>
 {
     try{
           let data=req.body;
@@ -54,7 +54,7 @@ const AddProduct = async(req,res)=>
     }
 }
 
-const GetProduct= async(req,res)=>
+const getProduct= async(req,res)=>
 {
    try{
         let product_id=req.params.id;
@@ -74,7 +74,7 @@ const GetProduct= async(req,res)=>
    }
 }
 
-const AddMultipleProducts= async(req,res)=>
+const addMultipleProducts= async(req,res)=>
 {
   try
   {
@@ -95,7 +95,7 @@ const AddMultipleProducts= async(req,res)=>
   }
 }
 
-const UpdateProduct=async(req,res)=>
+const updateProduct=async(req,res)=>
 {
     try
     {
@@ -117,7 +117,7 @@ const UpdateProduct=async(req,res)=>
     }
 }
 
-const UpdateMultipleProducts = async(req,res)=>
+const updateMultipleProducts = async(req,res)=>
 {
     try
     {
@@ -145,7 +145,7 @@ const UpdateMultipleProducts = async(req,res)=>
     }
 }
 
-const DeleteProduct = async(req,res)=>
+const deleteProduct = async(req,res)=>
 {
     try
     {
@@ -181,4 +181,32 @@ const DeleteProduct = async(req,res)=>
     }
 }
 
-module.exports={getAllProducts,AddProduct,GetProduct,AddMultipleProducts,UpdateProduct,DeleteProduct,UpdateMultipleProducts};
+const deleteMultiple = async(req,res)=>
+{
+ try
+ {
+    let key=req.params.key;
+
+    let value = req.params.value;
+
+    let query= {[key]:value};
+    console.log(query);
+    let res_back=await schema.deleteMany(query);
+
+    res.json({
+        status:"success",
+        msg:"Data deleted successfully",
+        res_back,
+    })
+
+ }
+ catch(err)
+ {
+    res.json({
+        status:"Failed",
+        msg:err.message,
+    })
+ }
+}
+
+module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple};
