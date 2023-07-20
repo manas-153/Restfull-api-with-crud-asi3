@@ -121,11 +121,27 @@ const UpdateMultipleProducts = async(req,res)=>
 {
     try
     {
-             
+      let keyValue=req.params.parameters;
+    
+      let value1=req.params.value.charAt(0).toUpperCase() + req.params.value.slice(1);
+      
+      const updateQuery = { [keyValue]:value1};
+
+       
+      let data=await schema.updateMany(updateQuery, {$set:req.body});
+    
+      res.json({
+        status:"success",
+        msg:"Products Updated successfully",
+        data
+      })
     }
     catch(err)
     {
-
+          res.status(400).json({
+            status:"failed",
+            msg:err.message,
+          })
     }
 }
 
@@ -165,4 +181,4 @@ const DeleteProduct = async(req,res)=>
     }
 }
 
-module.exports={getAllProducts,AddProduct,GetProduct,AddMultipleProducts,UpdateProduct,DeleteProduct};
+module.exports={getAllProducts,AddProduct,GetProduct,AddMultipleProducts,UpdateProduct,DeleteProduct,UpdateMultipleProducts};
