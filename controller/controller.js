@@ -1,6 +1,7 @@
 const schema=require('../database/database_schema');
 
-let threshold_quanity = 25;
+let threshold_QuanityLOw = 25;
+let threshold_QuanityHigh = 40;
 
 const getAllProducts = async(req,res)=>
 {
@@ -312,7 +313,7 @@ const productWithLowQuanity =async(req,res)=>
 {
     try
     {
-       let res_back=await schema.find({quantity:{$lt:threshold_quanity}}); 
+       let res_back=await schema.find({quantity:{$lt:threshold_QuanityLOw}}); 
 
        if(res_back.length)
        {
@@ -356,7 +357,7 @@ const calculateAvergareQuanity = async(req,res)=>
         res.send({
             "status":"success",
             msg:`Total quanity of products is ${totalQuanity}`,
-             averageQuanity: Math.round(totalQuanity/res_back.length) 
+             averageQuanity: Math.round(totalQuanity/res_back.length), 
         });
 
     }
@@ -376,4 +377,50 @@ const calculateAvergareQuanity = async(req,res)=>
     }
 }
 
-module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity};
+const highAndLowQuantity =async(req,res)=>
+{
+    try{
+        let user_req=req.params.option;
+        let res_back;
+        let option;
+
+        if(user_req==1)
+        {
+            option="high";
+            res_back=await schema.find({
+                 quantity:{$gte:threshold_QuanityHigh}
+            });
+        }
+        else if(user_req==0)
+        {
+            option="Low";
+            res_back=await schema.find({
+                quantity:{$lte:threshold_QuanityLOw}
+           });
+             
+        }
+
+        else{
+            res.status({
+                status:"failed",
+                msg:'Invalid Request Error, Please make the request between 0 and 1',
+            })
+            return;
+        }
+
+        res.send({
+            "status":"success",
+            msg:`Product with ${option} quanity is ${res_back.length}`,
+            res_back
+        });
+
+        }
+            
+    catch(err)
+    {
+           res.send(err.message);
+    }
+}
+
+
+module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity,highAndLowQuantity};
