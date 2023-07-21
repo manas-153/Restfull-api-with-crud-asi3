@@ -13,6 +13,14 @@ const Product_Schema= mongoose.Schema({
         required:true,
         type:String
     },
+    quantity:{
+        required:true,
+        type:Number
+    },
+    Mfgdate:{
+         required:true,
+         type:Date
+    },
     Offer:{
          required:false,
          type:String,
@@ -31,11 +39,11 @@ const Product_Schema= mongoose.Schema({
         type:String
     },
     colors:{
-        required:true,
+        required:false,
         type:Array
     },
     sizes:{
-       required:true,
+       required:false,
        type:Array
     },
     Review:{

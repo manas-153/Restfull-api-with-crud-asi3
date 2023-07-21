@@ -1,5 +1,7 @@
 const schema=require('../database/database_schema');
 
+let threshold_quanity = 25;
+
 const getAllProducts = async(req,res)=>
 {
    try{
@@ -125,17 +127,34 @@ const updateMultipleProducts = async(req,res)=>
     
       let value1=req.params.value.charAt(0).toUpperCase() + req.params.value.slice(1);
       
-      const updateQuery = { [keyValue]:value1};
+      const updateQuery = {[keyValue]:value1};
+      console.log(updateQuery);
 
        
       let data=await schema.updateMany(updateQuery, {$set:req.body});
+
+      if(data.modifiedCount)
+      {
+        res.json({
+            status:"success",
+            msg:"Products Updated successfully",
+            data
+          })
+
+      }
+
+      else{
+
+        res.json({
+            status:"failed",
+            msg:"No records matches to update",
+          })
+
+      }
     
-      res.json({
-        status:"success",
-        msg:"Products Updated successfully",
-        data
-      })
+  
     }
+    
     catch(err)
     {
           res.status(400).json({
@@ -209,4 +228,116 @@ const deleteMultiple = async(req,res)=>
  }
 }
 
-module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple};
+
+// assingment-4 additions 
+
+const totalProducts = async(req,res)=>
+{
+    try
+    {
+         let res_back=await schema.find();
+    
+         res.json({
+            "status":"success",
+             Total_Products_count : res_back.length
+         })
+    
+    }
+    catch(err)
+    {
+          res.status(400).json({
+            status:'failed',
+            msg:err.message
+          })
+    }
+}
+
+const filterProductsByMfgDate = async(req,res)=>
+{
+    try
+    {
+           let fromDate=new Date(req.body.from).toISOString();
+           let toDate=new Date(req.body.to).toISOString();
+
+           if(fromDate<toDate)
+           {
+
+            let res_back= await schema.find({
+            
+                Mfgdate: { $gte:fromDate,$lte: toDate}
+         }) 
+         
+         
+         if(res_back.length)
+         {
+             res.send({
+             status:"Success",
+             msg:`Product manufactured from ${fromDate} to ${toDate} date`,
+            res_back
+ 
+             })
+ 
+         }
+        else
+             {
+                 res.json({
+                     status:"failed",
+                     msg:`There is no such records found for these particular dates`,
+             
+                   })
+ 
+          }
+
+           }
+
+           else
+           {
+              res.status(400).json({
+                status:'failed',
+                msg:"from date can't be greater than to date"
+              })
+           }    
+
+    }
+    catch(err)
+    {
+        res.status(400).json({
+            status:"Failed",
+            msg:err.message
+        })
+    }
+}
+
+const productWithLowQuanity =async(req,res)=>
+{
+    try
+    {
+       let res_back=await schema.find({quantity:{$lt:threshold_quanity}}); 
+
+       if(res_back.length)
+       {
+           res.json({
+            status:'success',
+            msg: `We have ${res_back.length} Produts with low quanity`,
+            res_back
+           });
+       }
+       else
+       {
+        res.status(400).json({
+            status:"failed",
+            msg:"No Products was found with low quanity"
+        })
+       }
+      
+    }
+    catch(err)
+    {
+        res.status(400).json({
+            status:'failed',
+            msg:err.message,
+        })
+    }
+}
+
+module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity};
