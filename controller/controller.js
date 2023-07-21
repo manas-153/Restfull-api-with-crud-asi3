@@ -422,5 +422,23 @@ const highAndLowQuantity =async(req,res)=>
     }
 }
 
+const getSortProducts = async(req,res)=>
+{
+    try
+    {
+         let key=req.params.sortkey;
+         console.log(key);
+         let res_back= await schema.find().sort({[key]:1});
+         res.send(res_back);
+    }
+    catch(err)
+    {
+        res.status.send({
+            status:'failed',
+            masg:err.message
+        }
+            );
+    }
+}
 
-module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity,highAndLowQuantity};
+module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity,highAndLowQuantity,getSortProducts};
