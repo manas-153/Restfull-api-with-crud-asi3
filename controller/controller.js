@@ -340,4 +340,40 @@ const productWithLowQuanity =async(req,res)=>
     }
 }
 
-module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity};
+const calculateAvergareQuanity = async(req,res)=>
+{
+    try
+    {
+        let res_back=await schema.find({},{"quantity":1,_id:0});
+
+        if(res_back.length)
+        {
+        let totalQuanity=res_back.reduce((acc,curr)=>
+        {
+             return acc+=curr.quantity
+        },0)
+
+        res.send({
+            "status":"success",
+            msg:`Total quanity of products is ${totalQuanity}`,
+             averageQuanity: Math.round(totalQuanity/res_back.length) 
+        });
+
+    }
+
+    else
+    {
+        res.status(400).send({
+            status:'failed',
+            msg:'No products found in the database'
+        })
+    }
+
+}
+    catch(err)
+    {
+          res.send(err.message);
+    }
+}
+
+module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity};

@@ -1,6 +1,6 @@
 const express= require('express');
 
-const { getAllProducts,addProduct,getProduct, addMultipleProducts,updateProduct, deleteProduct, updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity} = require('../controller/controller');
+const { getAllProducts,addProduct,getProduct, addMultipleProducts,updateProduct, deleteProduct, updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity} = require('../controller/controller');
 
 
 const route= express.Router();
@@ -15,5 +15,6 @@ route.post("/UpdateMultiple/:parameters/:value", updateMultipleProducts);
 route.get("/deleteMultiple/:key/:value",deleteMultiple);
 route.get("/totalProducts",totalProducts);
 route.post("/filterByMfgDate",filterProductsByMfgDate);
-route.get("/productWithLowQuanity",productWithLowQuanity)
+route.get("/productWithLowQuanity",productWithLowQuanity);
+route.get('/calculateAvergareQuanity',calculateAvergareQuanity)
 module.exports= route;
