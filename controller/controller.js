@@ -424,16 +424,33 @@ const highAndLowQuantity =async(req,res)=>
 
 const getSortProducts = async(req,res)=>
 {
-    try
+  try
     {
          let key=req.params.sortkey;
-         console.log(key);
-         let res_back= await schema.find().sort({[key]:1});
-         res.send(res_back);
+         let option=req.params.option;
+
+         if(option!=1 && option!=-1)
+         {
+            res.status(400).send({
+                status:'failed',
+                msg:'Invalid Request, PLease make the request between 1 and -1',
+              
+            })
+
+            return;
+         }
+         let order = option==1 ? "Ascending" : "Descending";
+         let res_back= await schema.find().sort({[key]:option});
+
+         res.send({
+            status:"success",
+            msg:`${res_back.length} Products has been sorted in ${order} order`,
+            res_back
+         });
     }
     catch(err)
     {
-        res.status.send({
+        res.status(400).send({
             status:'failed',
             masg:err.message
         }
@@ -441,4 +458,28 @@ const getSortProducts = async(req,res)=>
     }
 }
 
-module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity,highAndLowQuantity,getSortProducts};
+const filterAndReviewEndpoints = async(req,res)=>
+{
+    let key=req.params.key;
+    let value=req.params.value;
+    try
+    {
+         let res_back=await schema.find({[key]:{$in:value}},{_id:0,Product_Name:1,Offer:1,Review:1,Mfgdate:1});
+
+         res_back.length ?  res.send({
+            status:'success',
+            msg:`${res_back.length} products find with this ${key}`,
+            res_back
+         }) : res.status(400).send({
+            "status":'failed',
+            msg:`No such product found with this ${key}`
+         })
+        
+    }
+    catch(err)
+    {
+         res.send(err.message);
+    }
+}
+
+module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity,highAndLowQuantity,getSortProducts,filterAndReviewEndpoints};
