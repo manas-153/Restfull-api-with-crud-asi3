@@ -3,6 +3,11 @@ const schema=require('../database/database_schema');
 let threshold_QuanityLOw = 25;
 let threshold_QuanityHigh = 40;
 
+const currentDate=new Date();
+
+let threeDaysAgo = new Date(currentDate.setDate(currentDate.getDate()-20)).toISOString();
+
+
 const getAllProducts = async(req,res)=>
 {
    try{
@@ -462,9 +467,17 @@ const filterAndReviewEndpoints = async(req,res)=>
 {
     let key=req.params.key;
     let value=req.params.value;
+
+    let show_attributes={
+        _id:0,
+        [key]:1,
+        ...req.body,
+    }
+
     try
     {
-         let res_back=await schema.find({[key]:{$in:value}},{_id:0,Product_Name:1,Offer:1,Review:1,Mfgdate:1});
+         let res_back=await schema.find({[key]:{$in:value}},show_attributes);
+
 
          res_back.length ?  res.send({
             status:'success',
@@ -476,10 +489,39 @@ const filterAndReviewEndpoints = async(req,res)=>
          })
         
     }
+
     catch(err)
     {
-         res.send(err.message);
+         res.send({
+            status:'success',
+            msg:err.message
+         });
     }
 }
 
-module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity,highAndLowQuantity,getSortProducts,filterAndReviewEndpoints};
+const recentProducts = async(req,res)=>
+{
+
+    try
+    {
+        let res_back=await schema.find({
+            
+             Mfgdate:{
+                $lte:new Date().toISOString(),
+                $gte:threeDaysAgo
+             }
+        }).sort({"Mfgdate":1})
+
+        res.send({
+            status:'success',
+            msg:`${res_back.length} Product found with Recent manufacturing date`,
+            res_back
+        })
+    }
+    catch(err)
+    {
+
+    }
+}
+
+module.exports={getAllProducts,addProduct,getProduct,addMultipleProducts,updateProduct,deleteProduct,updateMultipleProducts,deleteMultiple,totalProducts,filterProductsByMfgDate,productWithLowQuanity,calculateAvergareQuanity,highAndLowQuantity,getSortProducts,filterAndReviewEndpoints,recentProducts};
