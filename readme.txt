@@ -22,6 +22,21 @@ Project Description
 
   7. Delete a Single Product : User have the access to delete any product from the database by just providing the Unique product id as a parameter in the request, Once product is deleted user will receive the acknowledgement.
 
+  8. totalProducts : This functionality helps you to get the idea of total quanity of products avalaible.
+
+  9. filterProductsByMfgDate : user can access the list of products based upon their manufacturing date to get the clear idea of products marketing.
+
+  10. productWithLowQuanity : user can also check for the products with low quanitity so that demand can meet up without interruptions.
+
+  11. calculateAvergareQuanity : This will give you the average of total quantity.
+
+  12. highAndLowQuantity : this function will perform both functionality to get the list of products with high and low quality by passing a 1 and -1 parameter.
+
+  13. getSortProducts : This will sort the products based on the parameters used decide.
+
+  14. filterAndReviewEndpoints : This will filter the products on the basis of parameters user decided and show only the product information user needed.
+
+  15. recentProducts : This functionality helps the user to get the list of products was recently launched by differentiating in their manufacturing date.
 
 
 How to Install and Run the Api 
