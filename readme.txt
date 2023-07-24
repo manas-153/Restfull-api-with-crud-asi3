@@ -41,7 +41,7 @@ Project Description
 
 How to Install and Run the Api 
 
-Step 1: Vist the Repository link (https://github.com/manas-153/Jwt-authentication-Node-js.git) and download the zip file from the code section or you can clone the repository by running the (git clone https://github.com/manas-153/Jwt-authentication-Node-js.git) comannd.
+Step 1: Vist the Repository link (https://github.com/manas-153/Restfull-api-with-crud-asi3.git) and download the zip file from the code section or you can clone the repository by running the (git clone https://github.com/manas-153/Restfull-api-with-crud-asi3.git) comannd.
 
 Step 2: After succesfull cloning of the project Run the command (npm install), this will install all the packages and modules to your system which is required to run the project.
 
